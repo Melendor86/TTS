@@ -29,15 +29,21 @@
         document.getElementById("ttsLink").href = ttsUrl;
         document.getElementById("ttsLink").textContent = ttsUrl;
     }
-
+    
     function playAudio() {
-        let ttsUrl = document.getElementById("ttsLink").href;
-        if (!ttsUrl || ttsUrl === "#") {
-            alert("Nejdříve vygenerujte odkaz.");
+        let text = document.getElementById("textInput").value;
+        if (!text) {
+            alert("Nejdříve zadejte text.");
             return;
         }
+        let encodedText = encodeURIComponent(text);
+        let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
+        
+        // Vytvoření nového audio objektu a přehrání zvuku
         let audio = new Audio(ttsUrl);
-        audio.play();
+        audio.play().catch(error => {
+            alert("Došlo k chybě při přehrávání zvuku: " + error);
+        });
     }
     </script>
 </body>
