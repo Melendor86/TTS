@@ -7,6 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         input, button { margin: 10px; padding: 10px; font-size: 16px; }
+        audio { margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -16,6 +17,9 @@
     <p><strong>Vygenerovaný odkaz:</strong></p>
     <a id="ttsLink" href="#" target="_blank">Zde se zobrazí odkaz</a>
     <p><button onclick="playAudio()">Přehrát</button></p>
+    
+    <!-- Prázdný <audio> tag pro přehrání zvuku -->
+    <audio id="audioPlayer" controls></audio>
 
     <script>
     function generateTTSUrl() {
@@ -38,10 +42,11 @@
         }
         let encodedText = encodeURIComponent(text);
         let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
-        
-        // Vytvoření nového audio objektu a přehrání zvuku
-        let audio = new Audio(ttsUrl);
-        audio.play().catch(error => {
+
+        // Nastavení URL pro <audio> tag a přehrání zvuku
+        let audioPlayer = document.getElementById("audioPlayer");
+        audioPlayer.src = ttsUrl;  // Nastavení zdroje zvuku
+        audioPlayer.play().catch(error => {
             alert("Došlo k chybě při přehrávání zvuku: " + error);
         });
     }
