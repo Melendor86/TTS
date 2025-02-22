@@ -16,6 +16,7 @@
     <p><strong>Vygenerovaný odkaz:</strong></p>
     <a id="ttsLink" href="#" target="_blank">Zde se zobrazí odkaz</a>
     <p><button onclick="playAudio()">Přehrát</button></p>
+
     <script>
     function generateTTSUrl() {
         let text = document.getElementById("textInput").value;
@@ -28,7 +29,7 @@
         document.getElementById("ttsLink").href = ttsUrl;
         document.getElementById("ttsLink").textContent = ttsUrl;
     }
-    
+
     function playAudio() {
         let ttsUrl = document.getElementById("ttsLink").href;
         if (!ttsUrl || ttsUrl === "#") {
@@ -39,5 +40,6 @@
         audio.play();
     }
     </script>
+
 </body>
-</html>
+</ht ml>
