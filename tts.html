@@ -34,7 +34,7 @@
         document.getElementById("ttsLink").textContent = ttsUrl;
     }
     
-    function playAudio() {
+    async function playAudio() {
         let text = document.getElementById("textInput").value;
         if (!text) {
             alert("Nejdříve zadejte text.");
@@ -43,12 +43,24 @@
         let encodedText = encodeURIComponent(text);
         let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
 
-        // Nastavení URL pro <audio> tag a přehrání zvuku
-        let audioPlayer = document.getElementById("audioPlayer");
-        audioPlayer.src = ttsUrl;  // Nastavení zdroje zvuku
-        audioPlayer.play().catch(error => {
+        try {
+            // Načítáme zvuk pomocí Fetch API
+            let response = await fetch(ttsUrl);
+            if (!response.ok) {
+                throw new Error('Chyba při načítání zvuku');
+            }
+            let audioBlob = await response.blob();
+            
+            // Vytvoříme URL z blobu
+            let audioUrl = URL.createObjectURL(audioBlob);
+            
+            // Přiřadíme tuto URL k <audio> tagu a přehrajeme
+            let audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
+        } catch (error) {
             alert("Došlo k chybě při přehrávání zvuku: " + error);
-        });
+        }
     }
     </script>
 </body>
