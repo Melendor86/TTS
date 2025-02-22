@@ -16,7 +16,7 @@
     <p><strong>Vygenerovaný odkaz:</strong></p>
     <a id="ttsLink" href="#" target="_blank">Zde se zobrazí odkaz</a>
     <p><button onclick="playAudio()">Přehrát</button></p>
-
+    
     <script>
     function generateTTSUrl() {
         let text = document.getElementById("textInput").value;
@@ -26,10 +26,12 @@
         }
         let encodedText = encodeURIComponent(text);
         let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
+        
+        // Ujisti se, že vkládáš kompletní URL do odkazu
         document.getElementById("ttsLink").href = ttsUrl;
-        document.getElementById("ttsLink").textContent = ttsUrl;
+        document.getElementById("ttsLink").textContent = ttsUrl; // Text odkazu se změní na URL
     }
-
+    
     function playAudio() {
         let ttsUrl = document.getElementById("ttsLink").href;
         if (!ttsUrl || ttsUrl === "#") {
@@ -40,6 +42,5 @@
         audio.play();
     }
     </script>
-
 </body>
 </html>
