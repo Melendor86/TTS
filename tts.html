@@ -1,106 +1,43 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TTS URL Generátor</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-    input, button { margin: 10px; padding: 10px; font-size: 16px; }
-    #confirmOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-    #confirmDialog {
-      background: #fff;
-      padding: 20px;
-      border-radius: 4px;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS URL Generátor</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input, button { margin: 10px; padding: 10px; font-size: 16px; }
+    </style>
 </head>
 <body>
-  <h2>Google Translate TTS URL Generátor</h2>
-  <input type="text" id="textInput" placeholder="Zadej text..." size="50">
-  <button onclick="generateTTSUrl()">Generovat odkaz</button>
-  <p><strong>Vygenerovaný odkaz:</strong></p>
-  <a id="ttsLink" href="#" target="_blank">Zde se zobrazí odkaz</a>
-  <p>
-    <button onclick="showConfirm()">Přehrát</button>
-  </p>
-  
-  <!-- Audio tag -->
-  <audio id="audioPlayer" controls style="display:none;"></audio>
-  
-  <!-- Potvrzovací overlay -->
-  <div id="confirmOverlay">
-    <div id="confirmDialog">
-      <p>Opravdu chcete přehrát zvuk?</p>
-      <button onclick="confirmPlay()">Ano</button>
-      <button onclick="hideConfirm()">Ne</button>
-    </div>
-  </div>
-  
-  <script>
+    <h2>Google Translate TTS URL Generátor</h2>
+    <input type="text" id="textInput" placeholder="Zadej text..." size="50">
+    <button onclick="generateTTSUrl()">Generovat odkaz</button>
+    <p><strong>Vygenerovaný odkaz:</strong></p>
+    <a id="ttsLink" href="#" target="_blank">Zde se zobrazí odkaz</a>
+    <p><button onclick="playAudio()">Přehrát</button></p>
+    <script>
     function generateTTSUrl() {
-      let text = document.getElementById("textInput").value;
-      if (!text) {
-        alert("Prosím, zadejte text.");
-        return;
-      }
-      let encodedText = encodeURIComponent(text);
-      let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
-      document.getElementById("ttsLink").href = ttsUrl;
-      document.getElementById("ttsLink").textContent = ttsUrl;
-    }
-    
-    // Zobrazí potvrzovací dialog
-    function showConfirm() {
-      document.getElementById("confirmOverlay").style.display = "flex";
-    }
-    
-    // Skryje potvrzovací dialog
-    function hideConfirm() {
-      document.getElementById("confirmOverlay").style.display = "none";
-    }
-    
-    // Funkce, která se zavolá po potvrzení
-    function confirmPlay() {
-      hideConfirm();
-      playAudio();
-    }
-    
-    async function playAudio() {
-      let text = document.getElementById("textInput").value;
-      if (!text) {
-        alert("Nejdříve zadejte text.");
-        return;
-      }
-      let encodedText = encodeURIComponent(text);
-      let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
-      
-      try {
-        let response = await fetch(ttsUrl);
-        if (!response.ok) {
-          throw new Error('Chyba při načítání zvuku');
+        let text = document.getElementById("textInput").value;
+        if (!text) {
+            alert("Prosím, zadejte text.");
+            return;
         }
-        let audioBlob = await response.blob();
-        let audioUrl = URL.createObjectURL(audioBlob);
-        let audioPlayer = document.getElementById("audioPlayer");
-        audioPlayer.src = audioUrl;
-        audioPlayer.style.display = "block";
-        audioPlayer.play();
-      } catch (error) {
-        alert("Došlo k chybě při přehrávání zvuku: " + error);
-      }
+        let encodedText = encodeURIComponent(text);
+        let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=cs&client=tw-ob`;
+        document.getElementById("ttsLink").href = ttsUrl;
+        document.getElementById("ttsLink").textContent = ttsUrl;
     }
-  </script>
+    
+    function playAudio() {
+        let ttsUrl = document.getElementById("ttsLink").href;
+        if (!ttsUrl || ttsUrl === "#") {
+            alert("Nejdříve vygenerujte odkaz.");
+            return;
+        }
+        let audio = new Audio(ttsUrl);
+        audio.play();
+    }
+    </script>
 </body>
 </html>
