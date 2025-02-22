@@ -32,9 +32,6 @@
             document.getElementById("ttsLink").href = ttsUrl;
             document.getElementById("ttsLink").textContent = ttsUrl;
 
-            // Otevře URL v novém okně
-            window.open(ttsUrl, '_blank');
-
             // Vytvoříme audio objekt a přednačteme zvuk
             preloadedAudio = new Audio();
             preloadedAudio.src = ttsUrl;
